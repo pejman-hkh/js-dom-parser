@@ -13,7 +13,7 @@ export default class Find {
 						f = false;
 					}
 				} else {
-					let g = attr === 'tag' ? tag.tag : tag.attrs[attr];
+					let g = attr === 'tag' ? tag.tag : (tag.attrs?tag.attrs[attr]:'');
 					if (g !== value) {
 						f = false;
 					}
