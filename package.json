@@ -1,7 +1,7 @@
 {
   "name": "js-dom-parser",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "tiny and fast js dom parser",
   "main": "index.js",
   "directories": {
