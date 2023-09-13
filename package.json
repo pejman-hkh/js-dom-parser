@@ -1,12 +1,26 @@
 {
-  "name": "js",
+  "name": "js-dom-parser",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
+  "description": "tiny and fast js dom parser",
   "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pejman-hkh/js-dom-parser.git"
+  },
+  "keywords": [
+    "js-dom-parser"
+  ],
+  "author": "pejman.hkh@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pejman-hkh/js-dom-parser/issues"
+  },
+  "homepage": "https://github.com/pejman-hkh/js-dom-parser#readme"
 }
