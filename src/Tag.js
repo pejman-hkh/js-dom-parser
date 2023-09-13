@@ -1,3 +1,5 @@
+import Find from "./Find.js";
+
 export default class Tag {
 	constructor(parser) {
 		this.parser = parser;
