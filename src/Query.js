@@ -6,6 +6,7 @@ export default class Query {
             return c;
         }
         let a = '';
+    
         while (c = this.query[this.iq++]) {
             this.sep = ' ';
             if (c == ' ' || c == ',' || c == '>') {

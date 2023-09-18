@@ -1,8 +1,9 @@
 import Query from "./Query.js";
+//import NodeList from "./NodeList.js";
 
 export default class Find {
 	findAttr(attrs = [], tags) {
-		let ret = [];
+		let ret = []; //new NodeList;
 		for (let tag of tags) {
 			let f = true;
 			for (let attr in attrs) {
@@ -31,6 +32,7 @@ export default class Find {
 		}
 		return ret;
 	}
+
 	find(query = '', tags = [], index = []) {
 		if (!query) {
 			return tags;

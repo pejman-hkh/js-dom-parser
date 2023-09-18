@@ -1,38 +1,43 @@
 import Find from "./Find.js";
 
 export default class Tag {
-	constructor(parser) {
-		this.parser = parser;
-		this.id = parser.id++;
+	constructor() {
 	}
-
+	__get(key) {
+		if (this.attrs[key])
+			return this.attrs[key];
+		return this[key];
+	}
+	__set(key, value) {
+		if (this.attrs[key])
+			this.attr(key, value);
+		this[key] = value;
+	}
 	find(query, index = []) {
 		const f = new Find();
 		return f.find(query, [this], index);
 	}
-
+	remove() {
+		delete this.parent.childrens[this.eq];
+		this.updateParentsHtml(this.parent);
+	}
 	notEmpty() {
 		const ret = [];
 		for (const child of this.childrens) {
-			if (child.tag !== 'empty') {
+			if (child.tag !== 'empty')
 				ret.push(child);
-			}
 		}
 		return ret;
 	}
-
 	getElementById(id) {
 		return this.find("#" + id)[0];
 	}
-
 	getElementByTagName(name) {
 		return this.find(name)[0];
 	}
-
 	getElementsByTagName(name) {
 		return this.find(name);
 	}
-
 	children(index = []) {
 		let ret = this.notEmpty();
 		if (!Array.isArray(index)) {
@@ -40,81 +45,30 @@ export default class Tag {
 		}
 		return ret;
 	}
-
 	attr(name, value = '') {
-		if (value) {
+		if (value)
 			return this.setAttribute(name, value);
-		}
 		return this.getAttribute(name);
 	}
-
 	setAttribute(name, value) {
 		this.attrs.set(name, value);
 		return this;
 	}
-
 	getAttribute(name) {
 		this.attrs.get(name);
 		return this;
 	}
-
-	findParent(ptag = [], tags) {
-		let ret = [];
-		for (const tag of tags) {
-			if (tag.id === this.id) {
-				return ptag;
-			}
-			if (tag.childrens) {
-				const n = this.findParent(tag, tag.childrens);
-				if (n) {
-					return n;
-				}
-			}
-		}
-		return;
-	}
-
 	parent() {
-		return this.findParent(new Tag(this.parser), this.parser.tags);
+		return this.parent;
 	}
 	next() {
-		return this.findNext(this.parser.tags);
+		return this.next;
 	}
-	findNext(tags) {
-		let next = false;
-		let ret = [];
-		for (let tag of tags) {
-			if (next)
-				return tag;
-			if (tag.id == this.id)
-				next = true;
-			if (tag.childrens) {
-				let n = this.findNext(tag.childrens);
-				if (n)
-					return n;
-			}
-		}
-		return;
-	}
-	prev() {
-		return this.findPrev(this.parser.tags);
-	}
-	findPrev(tags) {
-		let ptag = '';
-		for (let tag of tags) {
-			if (tag.id == this.id)
-				return ptag;
-			if (tag.childrens) {
-				let n = this.findPrev(tag.childrens);
-				if (n)
-					return n;
-			}
-			ptag = tag;
-		}
-	}
+
 	makeHtml(tag, content) {
-		return '<' + tag.tag + (tag.attrs ? ' ' + tag.attrs.makeAttrsText() : '') + '>' + content + '</' + tag.tag + '>';
+	    return '<' + tag.tag + (tag.attrs ? ' ' + tag.attrs.makeAttrsText() : '') + '>' + content + '</' + tag.tag + '>';
 	}
+
 	concatHtmls(childrens) {
 		let html = '';
 		for (let child of childrens) {
@@ -129,17 +83,41 @@ export default class Tag {
 		}
 		return html;
 	}
-	html() {
-		return this.concatHtmls(this.childrens);
+
+	updateParentsHtml(parent) {
+	    parent.html = parent.getHtml();
+	    if (parent.parent) {
+	        updateParentsHtml(parent.parent);
+	    }
 	}
+
+	html(html) {
+	    if (html) {
+	        var p = new Parser(html);
+	        var childs = p.find();
+	        this.childrens = childs;
+	        childs.forEach(function(child) {
+	            child.parent = this;
+	        });
+	        this.html = this.getHtml();
+	        updateParentsHtml(this.parent);
+	        return this;
+	    }
+	    return this.html;
+	}
+
+	getHtml() {
+	    return this.concatHtmls(this.childrens);
+	}
+
 	outerHtml() {
-		return this.makeHtml(this, this.concatHtmls(this.childrens));
+	    return makeHtml(this, this.concatHtmls(this.childrens));
 	}
-	
+
 	text() {
 	    return this.concatTexts(this.childrens);
 	}
-
+	
 	concatTexts(childrens) {
 	    let html = '';
 	    childrens.forEach(child => {

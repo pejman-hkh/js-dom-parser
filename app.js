@@ -1,5 +1,4 @@
-import Parser from "../src/Parser.js";
-
+import Parser from './index.js';
 
 let p = new Parser( `
 <html>
@@ -33,16 +32,4 @@ dd <span>aaa</span>
 </body>
 </html> ` );
 
-console.log( p.find() );
-let tests;
-console.log(tests = p.find(".test1"));
-let test = tests[0];
-console.log( test.outerHtml() );
-
-console.log( test.next());
-console.log( test.prev() );
-
-console.log( test.text() );
-
-console.log( p.find("body") );
-console.log( p.find("input[type=button]") );
+console.log( p.find("body",0).find("div") );
